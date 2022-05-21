@@ -1,0 +1,77 @@
+class SqQueue(object):
+
+    def __init__(self, maxsize):
+        self.queue = [None] * maxsize
+        self.maxsize = maxsize
+        self.front = 0
+        self.rear = 0
+
+    # 返回当前队列的长度
+    def QueueLength(self):
+        return (self.rear - self.front + self.maxsize) % self.maxsize
+
+    # 当前队列是否为空
+    def IsEmptyQueue(self):
+        if self.front == self.rear:
+            iQueue = True
+        else:
+            iQueue = False
+        return iQueue
+
+    # 当前队列是否为满
+    def IsFullQueue(self):
+        if (self.rear + 1) % self.maxsize == self.front:
+            iQueue = True
+        else:
+            iQueue = False
+        return iQueue
+
+    # 如果队列未满，则在队尾插入元素，时间复杂度O(1)
+    def EnQueue(self, data):
+        if self.IsFullQueue():
+            print("The queue is full!")
+        else:
+            self.queue[self.rear] = data
+            self.rear = (self.rear + 1) % self.maxsize
+
+    # 如果队列不为空，则删除队头的元素,时间复杂度O(1)
+    def DeQueue(self):
+        if self.IsEmptyQueue():
+            print("The queue is empty!")
+        else:
+            data = self.queue[self.front]
+            self.queue[self.front] = None
+            self.front = (self.front + 1) % self.maxsize
+            return data
+
+    # 输出队列中的元素
+    def ShowQueue(self):
+        for i in range(self.maxsize):
+            # print('%d is\n' % i)
+            if (i != self.maxsize - 1):
+                print(self.queue[i], end=',')
+            else:
+                print(self.queue[i], end='')
+
+        print('')
+
+
+# 测试程序
+if __name__ == "__main__":
+    # 建立大小为15的循环队列
+    print('建立大小为15的循环队列，0~9入队列')
+    q = SqQueue(15)
+    # 0~9入队列
+    for i in range(10):
+        q.EnQueue(i)
+    q.ShowQueue()
+    # 删除队头的5个元素：0~4
+    print('删除队头的5个元素：0~4')
+    for i in range(5):
+        q.DeQueue()
+    q.ShowQueue()
+    # 从队尾增加9个元素：0~8
+    print('从队尾增加9个元素：0~8')
+    for i in range(9):
+        q.EnQueue(i)
+    q.ShowQueue()
